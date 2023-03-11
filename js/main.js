@@ -1,14 +1,5 @@
-// https server needed
-
-// Geolocation.getCurrentPosition(
-//     pos => console.log(pos),
-//     err => position = stdCity,
-//     { maximumAge: 0 },
-// )
-
-
 const options = {
-    enableHighAccuracy: true,
+    enableHighAccuracy: false,
     timeout: 5000,
     maximumAge: 0,
   };
@@ -19,11 +10,11 @@ const options = {
     console.log("Your current position is:");
     console.log(`Latitude : ${crd.latitude}`);
     console.log(`Longitude: ${crd.longitude}`);
-    console.log(`More or less ${crd.accuracy} meters.`);
+    console.log(`More or less ${crd.accuracy / 1000} kilometers.`);
   }
   
   function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
   
-  navigator.geolocation.getCurrentPosition(success, error, options);
+navigator.geolocation.getCurrentPosition(success, error, options);
