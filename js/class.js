@@ -20,35 +20,33 @@ class Coords {
     set lon(value) {
         this.#lon = value;
     }
-
-    toString() {
-        return `Latitude: ${this.#lat}, longitude: ${this.#lon}`;
-    }
 }
 
 
 class WeatherRequests {
     static #stdcoords = new Coords(49.842957, 24.031111);
 
+    static #fetchURL = `https://api.openweathermap.org/data/2.5/weather`;
     #apiKey = '';
-    #fetchURL = `https://api.openweathermap.org/data/2.5/weather?appid=${this.#apiKey}&`;
 
-    static #supportedLangs = ['af', 'al', 'ar', 'az', 'bg', 'ca', 'cz', 'da', 'de', 'el', 'en', 'eu', 'fa', 'fi', 'fr', 'gl', 'he', 'hi', 'hr', 'hu', 'id', 'it', 'ja', 'kr', 'la', 'lt', 'mk', 'no', 'nl', 'pl', 'pt', 'pt_br', 'ro', 'ru', 'sv', 'se', 'sk', 'sl', 'sp', 'es', 'sr', 'th', 'tr', 'ua', 'uk', 'vi', 'zh_cn', 'zh_tw', 'zu'];
+    static #supportedLangs = [
+        'af', 'al', 'ar', 'az', 'bg', 'ca', 'cz', 'da', 'de', 'el', 'en', 'eu', 'fa',
+        'fi', 'fr', 'gl', 'he', 'hi', 'hr', 'hu', 'id', 'it', 'ja', 'kr', 'la', 'lt',
+        'mk', 'no', 'nl', 'pl', 'pt', 'pt_br', 'ro', 'ru', 'sv', 'se', 'sk', 'sl',
+        'sp', 'es', 'sr', 'th', 'tr', 'ua', 'uk', 'vi', 'zh_cn', 'zh_tw', 'zu'
+    ];
     #lang;
 
     static #supportedUnits = ['standard', 'metric', 'imperial'];
     #units;
 
-    #options = {
-        enableHighAccuracy: false,
-        maximumAge: 0,
-    };
+    #gpsOptions;
 
-    constructor(key, lang, unitsSystem, options) {
+    constructor(key, lang, unitsSystem, gpsOptions) {
         this.#apiKey = key;
         this.language = lang;
         this.units = unitsSystem;
-        this.options = options;
+        this.gpsOptions = gpsOptions;
     }
 
     async coords() {
@@ -73,13 +71,7 @@ class WeatherRequests {
 
     async getWeather() {
         let coords = await this.coords();
-        return await fetch(`${this.#fetchURL}lat=${lat}&lon=${lon}&units=${units}`).then(r => r.json());
-    }
-
-    listenWeather(success, err) {
-        navigator.geolocation.watchPosition(success, err, this.options);
-
-        // HERE
+        return await fetch(`${WeatherRequests.#fetchURL}?appid=${this.#apiKey}&lat=${coords.lat}&lon=${coords.lon}&units=${this.units}`).then(r => r.json());
     }
 
     static get supportedLanguages() {
@@ -102,7 +94,7 @@ class WeatherRequests {
     }
 
     static supportsUnits(system) {
-        return WeatherRequests.#units.includes(system);
+        return WeatherRequests.#supportedUnits.includes(system);
     }
     get units() {
         return this.#units;
@@ -117,11 +109,11 @@ class WeatherRequests {
     }
 
     get options() {
-        return this.#options;
+        return this.#gpsOptions;
     }
     set options(value) {
-        this.#options = value;
+        this.#gpsOptions = value;
     }
 }
 
-export { WeatherRequests, Coords };
+export { WeatherRequests };
