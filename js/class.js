@@ -30,21 +30,28 @@ class Coords {
 class WeatherRequests {
     static #stdcoords = new Coords(49.842957, 24.031111);
 
-    static #apiKey = '';
-    static #fetchURL = `https://api.openweathermap.org/data/2.5/weather?appid=${WeatherRequests.#apiKey}&`;
+    #apiKey = '';
+    #fetchURL = `https://api.openweathermap.org/data/2.5/weather?appid=${this.#apiKey}&`;
 
     static #supportedLangs = ['af', 'al', 'ar', 'az', 'bg', 'ca', 'cz', 'da', 'de', 'el', 'en', 'eu', 'fa', 'fi', 'fr', 'gl', 'he', 'hi', 'hr', 'hu', 'id', 'it', 'ja', 'kr', 'la', 'lt', 'mk', 'no', 'nl', 'pl', 'pt', 'pt_br', 'ro', 'ru', 'sv', 'se', 'sk', 'sl', 'sp', 'es', 'sr', 'th', 'tr', 'ua', 'uk', 'vi', 'zh_cn', 'zh_tw', 'zu'];
-    static #lang = 'ua';
+    #lang;
 
     static #supportedUnits = ['standard', 'metric', 'imperial'];
-    static #units = WeatherRequests.#supportedUnits;
+    #units;
 
-    static #options = {
+    #options = {
         enableHighAccuracy: false,
         maximumAge: 0,
     };
 
-    static async coords() {
+    constructor(key, lang, unitsSystem, options) {
+        this.#apiKey = key;
+        this.language = lang;
+        this.units = unitsSystem;
+        this.options = options;
+    }
+
+    async coords() {
         return new Promise((resolve, reject) => {
             if ('geolocation' in navigator) {
                 navigator.geolocation.getCurrentPosition(
@@ -64,20 +71,13 @@ class WeatherRequests {
         });
     }
 
-
-
-    static async #fetchWeather(lat, lon, units = WeatherRequests.units, lang = WeatherRequests.language) {
-        let coords = await WeatherRequests.coords();
+    async getWeather() {
+        let coords = await this.coords();
         return await fetch(`${this.#fetchURL}lat=${lat}&lon=${lon}&units=${units}`).then(r => r.json());
     }
 
-    static async getWeather() {
-        let coords = await WeatherRequests.coords();
-        return WeatherRequests.#fetchWeather(coords.lat, coords.lon);
-    }
-
-    static listenWeather(success, err) {
-        navigator.geolocation.watchPosition(success, err, WeatherRequests.#options);
+    listenWeather(success, err) {
+        navigator.geolocation.watchPosition(success, err, this.options);
 
         // HERE
     }
@@ -89,12 +89,12 @@ class WeatherRequests {
     static supportsLanguage(lang) {
         return WeatherRequests.#supportedLangs.includes(lang);
     }
-    static get language() {
-        return WeatherRequests.#lang;
+    get language() {
+        return this.#lang;
     }
-    static set language(lang) {
+    set language(lang) {
         if (WeatherRequests.supportsLanguage(lang)) {
-            WeatherRequests.#lang = lang;
+            this.#lang = lang;
         }
         else {
             throw new Error(`The language ${lang} is not supported`);
@@ -104,16 +104,23 @@ class WeatherRequests {
     static supportsUnits(system) {
         return WeatherRequests.#units.includes(system);
     }
-    static get units() {
-        return WeatherRequests.#units;
+    get units() {
+        return this.#units;
     }
-    static set units(system) {
+    set units(system) {
         if (WeatherRequests.supportsUnits(system)) {
-            WeatherRequests.#units = system;
+            this.#units = system;
         }
         else {
             throw new Error(`The language ${lang} is not supported`);
         }
+    }
+
+    get options() {
+        return this.#options;
+    }
+    set options(value) {
+        this.#options = value;
     }
 }
 
