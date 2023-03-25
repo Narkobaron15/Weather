@@ -203,8 +203,6 @@ class Process {
     }
 
     #ConstructFiveDayCard(weatherObj) {
-        // console.log(weatherObj);
-
         const mainCardDiv = document.createElement('div');
         mainCardDiv.classList.add('card', 'smcard');
 
