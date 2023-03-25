@@ -1,0 +1,76 @@
+.weathericon {
+    display: inline-block;
+    background: center / contain no-repeat;
+}
+
+._01d {
+    background-image: url('../img/01d.png');
+}
+
+._01n {
+    background-image: url('../img/01n.png');
+}
+
+._02d {
+    background-image: url('../img/02d.png');
+}
+
+._02n {
+    background-image: url('../img/02n.png');
+}
+
+._03d {
+    background-image: url('../img/03dn.png');
+}
+
+._03n {
+    background-image: url('../img/03dn.png');
+}
+
+._04d {
+    background-image: url('../img/04dn.png');
+}
+
+._04n {
+    background-image: url('../img/04dn.png');
+}
+
+._09d {
+    background-image: url('../img/09dn.png');
+}
+
+._09n {
+    background-image: url('../img/09dn.png');
+}
+
+._10d {
+    background-image: url('../img/10d.png');
+}
+
+._10n {
+    background-image: url('../img/10n.png');
+}
+
+._11d {
+    background-image: url('../img/11dn.png');
+}
+
+._11n {
+    background-image: url('../img/11dn.png');
+}
+
+._13d {
+    background-image: url('../img/13dn.png');
+}
+
+._13n {
+    background-image: url('../img/13dn.png');
+}
+
+._50d {
+    background-image: url('../img/50dn.png');
+}
+
+._50n {
+    background-image: url('../img/50dn.png');
+}

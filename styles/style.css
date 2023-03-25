@@ -1,0 +1,31 @@
+/* Tailwind styles */
+@import url('./tailwind.css');
+
+/* Icons */
+@import url('./icons.css');
+
+/* Custom styles */
+
+html {
+  font-size: 24px;
+}
+
+@media(min-width: 1024px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+#logo {
+  background: center / contain no-repeat url('../img/logo.png');
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+
+.errorimg {
+  display: block;
+  background: center / contain no-repeat url('../img/404.png');
+  height: 30rem;
+  width: 40rem;
+}
